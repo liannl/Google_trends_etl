@@ -1,0 +1,13 @@
+logs/
+plugins/
+data_lake/
+
+synthetic_data/.ipynb_checkpoints
+
+
+superset_data/
+
+
+dags/.DS_Store
+
+.DS_Store
