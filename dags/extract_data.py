@@ -9,8 +9,23 @@ from io import StringIO
 from dateutil.relativedelta import relativedelta
 
 
-TABLE_NAME = 'test_table'
+TABLE_NAME = 'raw_pytrends'
 POSTGRES_CONNECTION = 'postgres_public'
+
+
+default_args = {
+    'owner': 'airflow',
+    'start_date': datetime(2024, 10, 22),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+
+dag = DAG(
+    'create_table_and_insert_data',
+    default_args=default_args,
+    description='Read API and insert data into table',
+    schedule_interval=timedelta(days=1),
+)
 
 
 def get_trends_for_region(keywords,
@@ -68,21 +83,6 @@ def get_all_regions_trends(keywords,
     all_data.reset_index(inplace=True)
 
     return all_data
-
-
-default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2024, 10, 22),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-}
-
-dag = DAG(
-    'create_table_and_insert_data',
-    default_args=default_args,
-    description='Read API and insert data into table',
-    schedule_interval=timedelta(days=1),
-)
 
 
 def read_dataframe(**kwargs):
